@@ -1,11 +1,12 @@
 #include "bus.hpp"
 
 Bus::Bus() {
-    cpu.ConnectBus(this);
     //for(auto &i : ram) i = 0x00;
     for(int i = 0; i < ram.size(); i++) {
         ram[i] = 0x00;
     }
+
+    cpu.ConnectBus(this);
 }
 
 Bus::~Bus() {}
