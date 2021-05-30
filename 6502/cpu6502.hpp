@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string>
+#include <vector>
 
 class Bus;
 
@@ -13,22 +14,22 @@ class cpu6502 {
 
     public:
         enum FLAGS6502 {
-            C = (1 << 0),   //Carry
-            Z = (1 << 1),   //Zero
-            I = (1 << 2),   //Disable Interrupts
-            D = (1 << 3),   //Decimal Mode
-            B = (1 << 4),   //Break
-            U = (1 << 5),   //Unused
-            V = (1 << 6),   //Overflow
-            N = (1 << 7)    //Negative
+            C = (1 << 0),   //carry
+            Z = (1 << 1),   //zero
+            I = (1 << 2),   //disable Interrupts
+            D = (1 << 3),   //decimal Mode
+            B = (1 << 4),   //break
+            U = (1 << 5),   //unused
+            V = (1 << 6),   //overflow
+            N = (1 << 7)    //negative
         };
 
-        uint8_t  a      = 0x00;		// Accumulator Register
-        uint8_t  x      = 0x00;		// X Register
-        uint8_t  y      = 0x00;		// Y Register
-        uint8_t  stkp   = 0x00;		// Stack Pointer (points to location on bus)
-        uint16_t pc     = 0x0000;	// Program Counter
-        uint8_t  status = 0x00;		// Status Register
+        uint8_t  a      = 0x00;		// accumulator Register
+        uint8_t  x      = 0x00;		// x register
+        uint8_t  y      = 0x00;		// y register
+        uint8_t  stkp   = 0x00;		// stack pointer (points to location on bus)
+        uint16_t pc     = 0x0000;	// program counter
+        uint8_t  status = 0x00;		// status register
 
         void ConnectBus(Bus *n) {
             bus = n;
@@ -59,17 +60,17 @@ class cpu6502 {
         uint8_t STX();	uint8_t STY();	uint8_t TAX();	uint8_t TAY();
         uint8_t TSX();	uint8_t TXA();	uint8_t TXS();	uint8_t TYA();
 
-        //Illegal Opcode
-        uint8_t XXX();
+        
+        uint8_t XXX(); //illegal opcode
 
         void clock();
         void reset();
-        void irq(); //Interrupt request signal
-        void nmi(); //Non maskable interrupt signal
+        void irq(); //interrupt request signal
+        void nmi(); //non-maskable interrupt signal
 
         uint8_t fetch();
         uint8_t fetched = 0x00;
-
+        uint16_t temp = 0x0000;
         uint16_t addr_abs = 0x0000;
         uint16_t addr_rel = 0x00;
         uint8_t opcode = 0x00;
@@ -83,13 +84,14 @@ class cpu6502 {
         uint8_t GetFlag(FLAGS6502 f);
         void SetFlag(FLAGS6502 f, bool v);
 
-       struct INSTRUCTION
-        {
+        struct INSTRUCTION {
             std::string name;		
             uint8_t (cpu6502::*operate )(void) = nullptr;
             uint8_t (cpu6502::*addrmode)(void) = nullptr;
             uint8_t cycles = 0;
-        }; 
+        };
+
+        std::vector<INSTRUCTION> lookup;
 };
 
 #endif

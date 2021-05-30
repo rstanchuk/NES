@@ -1,6 +1,7 @@
+CFLAGS = -std=c++17 -stdlib=libc++
+
 all:
-	g++ -c cpu6502.cpp
-	g++ -c bus.cpp
+	clang++ ${CFLAGS} -c cpu6502.cpp
+	clang++ ${CFLAGS} -c bus.cpp
 clean:
-	rm cpu6502.o
-	rm bus.o
+	rm *.o
