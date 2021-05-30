@@ -1,3 +1,6 @@
+#ifndef BUS_HPP
+#define BUS_HPP
+
 #include <cstdint>
 #include <array>
 
@@ -17,3 +20,5 @@ class Bus {
         uint8_t read(uint16_t addr, bool bReadOnly = false);
 
 };
+
+#endif
