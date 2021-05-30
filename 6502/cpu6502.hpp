@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include <map>
 
 class Bus;
 
@@ -34,6 +35,8 @@ class cpu6502 {
         void ConnectBus(Bus *n) {
             bus = n;
         }
+
+        std::map<uint16_t, std::string> disassemble(uint16_t nStart, uint16_t nStop);
 
     private:
         //Addressing Modes
@@ -67,6 +70,8 @@ class cpu6502 {
         void reset();
         void irq(); //interrupt request signal
         void nmi(); //non-maskable interrupt signal
+
+        bool complete(); //step-by-step execution, without manually clocking every cycle
 
         uint8_t fetch();
         uint8_t fetched = 0x00;
