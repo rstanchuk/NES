@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "olcPixelGameEngine.h"
+#include "../olcPixelGameEngine.h"
 
 #include "bus.hpp"
 #include "cpu6502.hpp"
