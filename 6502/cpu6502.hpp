@@ -13,7 +13,6 @@ class cpu6502 {
         cpu6502();
         ~cpu6502();
 
-    public:
         enum FLAGS6502 {
             C = (1 << 0),   //carry
             Z = (1 << 1),   //zero
@@ -31,6 +30,13 @@ class cpu6502 {
         uint8_t  stkp   = 0x00;		// stack pointer (points to location on bus)
         uint16_t pc     = 0x0000;	// program counter
         uint8_t  status = 0x00;		// status register
+
+        void clock();
+        void reset();
+        void irq(); //interrupt request signal
+        void nmi(); //non-maskable interrupt signal
+
+        bool complete(); //step-by-step execution, without manually clocking every cycle
 
         void ConnectBus(Bus *n) {
             bus = n;
@@ -62,16 +68,7 @@ class cpu6502 {
         uint8_t SEC();	uint8_t SED();	uint8_t SEI();	uint8_t STA();
         uint8_t STX();	uint8_t STY();	uint8_t TAX();	uint8_t TAY();
         uint8_t TSX();	uint8_t TXA();	uint8_t TXS();	uint8_t TYA();
-
-        
         uint8_t XXX(); //illegal opcode
-
-        void clock();
-        void reset();
-        void irq(); //interrupt request signal
-        void nmi(); //non-maskable interrupt signal
-
-        bool complete(); //step-by-step execution, without manually clocking every cycle
 
         uint8_t fetch();
         uint8_t fetched = 0x00;
@@ -80,8 +77,7 @@ class cpu6502 {
         uint16_t addr_rel = 0x00;
         uint8_t opcode = 0x00;
         uint8_t cycles = 0;
-    
-    private:
+
         Bus *bus = nullptr;
         uint8_t read(uint16_t a);
         void write(uint16_t a, uint8_t d);
