@@ -5,6 +5,6 @@ all:
 	clang++ ${CFLAGS} -c cpu6502.cpp
 	clang++ ${CFLAGS} -c bus.cpp
 test:
-	g++ ${CFLAGS} ${OLCFLAGS} cpu6502.cpp bus.cpp cpuTest.cpp -o test
+	clang++ ${CFLAGS} ${OLCFLAGS} cpu6502.cpp bus.cpp cpuTest.cpp -o test
 clean:
 	rm *.o test
