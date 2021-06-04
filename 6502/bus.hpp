@@ -5,8 +5,8 @@
 #include <array>
 
 #include "cpu6502.hpp"
-#include "../2C02/ppu2C02.hpp"
-#include "../cartridge/cartridge.hpp"
+#include "ppu2C02.hpp"
+#include "cartridge.hpp"
 
 class Bus {
     public:

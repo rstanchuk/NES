@@ -3,11 +3,24 @@
 
 #include <cstdint>
 #include <vector>
+#include <fstream>
+#include <string>
+
+#include "mapper000.hpp"
 
 class Cartridge {
     public:
         Cartridge(const std::string& sFileName);
         ~Cartridge();
+
+        enum MIRROR {
+            HORIZONTAL,
+            VERTICAL,
+            ONESCREEN_LO,
+            ONESCREEN_HI,
+        } mirror = HORIZONTAL;
+
+        bool ImageValid();
         
     private:
         std::vector<uint8_t> vPRGMemory;
@@ -17,12 +30,15 @@ class Cartridge {
         uint8_t nPRGBanks = 0;
         uint8_t nCHRBanks = 0;
 
-    public:
-        uint8_t cpuRead(uint16_t addr, bool rdonly = false);
-        void cpuWrite(uint16_t addr, uint8_t  data);
+        bool bImageValid = false;
+        std::shared_ptr<Mapper> pMapper;
 
-        uint8_t ppuRead(uint16_t addr, bool rdonly = false);
-        void ppuWrite(uint16_t addr, uint8_t data);
+    public:
+        bool cpuRead(uint16_t addr, uint8_t &data);
+        bool cpuWrite(uint16_t addr, uint8_t data);
+
+        bool ppuRead(uint16_t addr, uint8_t &data);
+        bool ppuWrite(uint16_t addr, uint8_t data);
 };
 
 #endif
