@@ -6,7 +6,7 @@
 #include <fstream>
 #include <string>
 
-#include "mapper000.hpp"
+#include "../mapper/mapper000.hpp"
 
 class Cartridge {
     public:

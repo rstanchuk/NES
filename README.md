@@ -1,2 +1,2 @@
 # NESemul
-[olcPixelEngine](https://github.com/sadikovi/olcPixelGameEngine-macos)
+[olcPixelEngine](https://github.com/OneLoneCoder/olcPixelGameEngine)

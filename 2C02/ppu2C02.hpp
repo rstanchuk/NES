@@ -1,13 +1,12 @@
 #ifndef PPU2C02_HPP
 #define PPU2C02_HPP
 
-#include "olcPixelGameEngine.h"
+#include "../olcPixelGameEngine.h"
 
 #include <cstdint>
 #include <memory>
 
-
-#include "cartridge.hpp"
+#include "../cartridge/cartridge.hpp"
 
 class ppu2C02 {
     public:

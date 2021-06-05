@@ -4,8 +4,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "bus.hpp"
-#include "cpu6502.hpp"
+#include "./6502/bus.hpp"
+#include "./6502/cpu6502.hpp"
 
 class testCPU : public olc::PixelGameEngine {
 	public:
@@ -119,8 +119,6 @@ class testCPU : public olc::PixelGameEngine {
 		{
 			Clear(olc::DARK_BLUE);
 
-			
-
 			if (bEmulationRun)
 			{
 				if (fResidualTime > 0.0f)
@@ -170,8 +168,8 @@ class testCPU : public olc::PixelGameEngine {
 };
 
 int main() {
-	// testCPU demo;
-	// demo.Construct(780, 480, 2, 2);
-	// demo.Start();
+	testCPU demo;
+	demo.Construct(780, 480, 2, 2);
+	demo.Start();
 	return 0;
 }
