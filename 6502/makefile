@@ -1,8 +1,8 @@
-CFLAGS = -std=c++17 -stdlib=libc++
-OLCFLAGS = -w -I/usr/X11/include -L/usr/X11/lib -lX11 -lGL -lpng -lpthread
+CFLAGS = -w -arch x86_64 -std=c++17 -mmacosx-version-min=10.15 -Wall -framework OpenGL \
+		-framework GLUT -framework Carbon -lpng
 
 all:
-	clang++ ${CFLAGS} ${OLCFLAGS} -c cpu6502.cpp
-	clang++ ${CFLAGS} ${OLCFLAGS} -c bus.cpp
+	clang++ ${CFLAGS} -c cpu6502.cpp
+	clang++ ${CFLAGS} -c bus.cpp
 clean:
 	rm *.o test

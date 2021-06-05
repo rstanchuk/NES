@@ -16,7 +16,7 @@ class Bus {
     public:
         cpu6502 cpu;
         ppu2C02 ppu;
-        std::array<uint8_t, 2048> cpuRam;
+        uint8_t cpuRam[2048];
 
         std::shared_ptr<Cartridge> cart;
 

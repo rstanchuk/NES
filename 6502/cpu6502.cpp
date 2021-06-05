@@ -913,7 +913,7 @@ std::map<uint16_t, std::string> cpu6502::disassemble(uint16_t nStart, uint16_t n
 		else if (lookup[opcode].addrmode == &cpu6502::REL)
 		{
 			value = bus->cpuRead(addr, true); addr++;
-			sInst += "$" + hex(value, 2) + " [$" + hex(addr + value, 4) + "] {REL}";
+			sInst += "$" + hex(value, 2) + " [$" + hex(addr + (int8_t)value, 4) + "] {REL}";
 		}
 
 		// Add the formed string to a std::map, using the instruction's

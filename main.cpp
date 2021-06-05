@@ -9,7 +9,7 @@
 
 class testCPU : public olc::PixelGameEngine {
 	public:
-		testCPU() { sAppName = "olc2C02 Demonstration"; }
+		testCPU() { sAppName = "NES"; }
 
 	private: 
 		// The NES

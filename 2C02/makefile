@@ -1,7 +1,7 @@
-CFLAGS = -std=c++17 -stdlib=libc++
-OLCFLAGS = -w -I/usr/X11/include -L/usr/X11/lib -lX11 -lGL -lpng -lpthread
+CFLAGS = -w -arch x86_64 -std=c++17 -mmacosx-version-min=10.15 -Wall -framework OpenGL \
+		-framework GLUT -framework Carbon -lpng
 
 all:
-	clang++ ${CFLAGS} ${OLCFLAGS} -c ppu2C02.cpp
+	clang++ ${CFLAGS} -c ppu2C02.cpp
 clean:
 	rm *.o

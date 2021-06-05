@@ -14,7 +14,7 @@ Cartridge::Cartridge(const std::string& sFileName) {
 		char unused[5];
 	} header;
 
-	// bImageValid = false;
+	bImageValid = false;
 
 	std::ifstream ifs;
 	ifs.open(sFileName, std::ifstream::binary);
@@ -57,6 +57,7 @@ Cartridge::Cartridge(const std::string& sFileName) {
 				break;
 		}
 
+		bImageValid = true;
         ifs.close();
     }
 

@@ -2,5 +2,5 @@
 /.vscode
 olcPixelGameEngine.h
 *.o
-nestest.nes
 ./nes
+nestest.nes
