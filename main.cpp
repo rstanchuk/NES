@@ -186,7 +186,7 @@ class NES : public olc::PixelGameEngine {
 
 int main() {
 	NES nes;
-	nes.Construct(780, 480, 2, 2);
+	nes.Construct(780, 480, 1, 1);
 	nes.Start();
 	return 0;
 }
