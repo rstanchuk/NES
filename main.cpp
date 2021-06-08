@@ -3,13 +3,16 @@
 
 #include <iostream>
 #include <sstream>
+#include <string>
 
 #include "./6502/bus.hpp"
 #include "./6502/cpu6502.hpp"
 
+std::string rom;
+
 class NES : public olc::PixelGameEngine {
 	public:
-		NES() { sAppName = "NES"; }
+		NES() { sAppName = rom; }
 
 	private: 
 		// The NES
@@ -97,7 +100,7 @@ class NES : public olc::PixelGameEngine {
 
 		bool OnUserCreate() {
 			// Load the cartridge
-			cart = std::make_shared<Cartridge>("roms/Super Mario Bros.nes");
+			cart = std::make_shared<Cartridge>(rom);
 			
 			if (!cart->ImageValid())
 				return false;
@@ -184,9 +187,15 @@ class NES : public olc::PixelGameEngine {
 		}
 };
 
-int main() {
+int main(int argc, char* argv[]) {
+	if(argc < 2) {
+		std::cout << "./nes <rom>\n";
+		exit(1);
+	}
+
+	rom = argv[1];
 	NES nes;
-	nes.Construct(780, 480, 1, 1);
+	nes.Construct(780, 480, 2, 2);
 	nes.Start();
 	return 0;
 }
