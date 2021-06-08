@@ -1,6 +1,5 @@
 /.DS_Store
 /.vscode
 olcPixelGameEngine.h
-*.o
-./nes
+nes
 roms
