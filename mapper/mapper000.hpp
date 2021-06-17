@@ -10,10 +10,12 @@ class Mapper000 : public Mapper {
         ~Mapper000();
 
         virtual bool cpuMapRead(uint16_t addr, uint32_t &mapped_addr) override;
-        virtual bool cpuMapWrite(uint16_t addr, uint32_t &mapped_addr) override;
+        virtual bool cpuMapWrite(uint16_t addr, uint32_t &mapped_addr, uint8_t data = 0) override;
         
         virtual bool ppuMapRead(uint16_t addr, uint32_t &mapped_addr) override;
         virtual bool ppuMapWrite(uint16_t addr, uint32_t &mapped_addr) override;
+
+        //void reset() override;
 };
 
 #endif

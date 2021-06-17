@@ -12,7 +12,13 @@ std::string rom;
 
 class NES : public olc::PixelGameEngine {
 	public:
-		NES() { sAppName = rom; }
+		NES() { sAppName = "NES"; }
+
+		std::string romPath;
+
+		void setRomPath(std::string romPath) {
+			this->romPath = romPath;
+		}
 
 	private: 
 		// The NES
@@ -100,7 +106,7 @@ class NES : public olc::PixelGameEngine {
 
 		bool OnUserCreate() {
 			// Load the cartridge
-			cart = std::make_shared<Cartridge>(rom);
+			cart = std::make_shared<Cartridge>(romPath);
 			
 			if (!cart->ImageValid())
 				return false;
@@ -193,9 +199,10 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	}
 
-	rom = argv[1];
 	NES nes;
+	nes.setRomPath(argv[1]);
 	nes.Construct(780, 480, 2, 2);
+	//nes.Construct(256, 240, 3, 3);
 	nes.Start();
 	return 0;
 }

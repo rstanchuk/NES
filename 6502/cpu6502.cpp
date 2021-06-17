@@ -115,6 +115,7 @@ void cpu6502::nmi() {
 void cpu6502::clock() {
     if(cycles == 0) {
         opcode = read(pc);
+		SetFlag(U, true);
         pc++;
         //starting number
         cycles = lookup[opcode].cycles;
@@ -125,7 +126,7 @@ void cpu6502::clock() {
         cycles += (additional_cycle1 & additional_cycle2);
         SetFlag(U, true);
     }
-
+	clock_count++;
     cycles--;
 }
 

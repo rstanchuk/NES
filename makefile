@@ -1,4 +1,4 @@
-CFLAGS = -w -arch x86_64 -std=c++17 -mmacosx-version-min=10.15 -Wall -framework OpenGL \
+CFLAGS = -arch x86_64 -std=c++17 -mmacosx-version-min=11.0 -Wall -framework OpenGL \
 		-framework GLUT -framework Carbon -lpng
 
 all:

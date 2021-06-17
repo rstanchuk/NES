@@ -340,8 +340,11 @@ void ppu2C02::reset() {
 
 void ppu2C02::clock() {
 	auto IncrementScrollX = [&]() {
-		
+		// Ony if rendering is enabled
 		if (mask.render_background || mask.render_sprites) {
+			// A single name table is 32x30 tiles. As we increment horizontally
+			// we may cross into a neighbouring nametable, or wrap around to
+			// a neighbouring nametable
 			if (vram_addr.coarse_x == 31) {
 				// Leaving nametable so wrap address round
 				vram_addr.coarse_x = 0;
@@ -355,7 +358,6 @@ void ppu2C02::clock() {
 	};
 
 	auto IncrementScrollY = [&]() {
-
 		// Ony if rendering is enabled
 		if (mask.render_background || mask.render_sprites) {
 			// If possible, just increment the fine y offset
@@ -386,7 +388,8 @@ void ppu2C02::clock() {
 
 	auto TransferAddressX = [&]() {
 		// Ony if rendering is enabled
-		if (mask.render_background || mask.render_sprites) {
+		if (mask.render_background || mask.render_sprites)
+		{
 			vram_addr.nametable_x = tram_addr.nametable_x;
 			vram_addr.coarse_x    = tram_addr.coarse_x;
 		}
@@ -404,9 +407,11 @@ void ppu2C02::clock() {
 	auto LoadBackgroundShifters = [&]() {	
 		bg_shifter_pattern_lo = (bg_shifter_pattern_lo & 0xFF00) | bg_next_tile_lsb;
 		bg_shifter_pattern_hi = (bg_shifter_pattern_hi & 0xFF00) | bg_next_tile_msb;
+
 		bg_shifter_attrib_lo  = (bg_shifter_attrib_lo & 0xFF00) | ((bg_next_tile_attrib & 0b01) ? 0xFF : 0x00);
 		bg_shifter_attrib_hi  = (bg_shifter_attrib_hi & 0xFF00) | ((bg_next_tile_attrib & 0b10) ? 0xFF : 0x00);
 	};
+
 
 	auto UpdateShifters = [&]() {
 		if (mask.render_background) {
@@ -437,7 +442,6 @@ void ppu2C02::clock() {
 			
 			switch ((cycle - 1) % 8) {
 				case 0:
-					// Load the current background tile pattern and attributes into the "shifter"
 					LoadBackgroundShifters();
 					bg_next_tile_id = ppuRead(0x2000 | (vram_addr.reg & 0x0FFF));
 					break;
@@ -445,17 +449,15 @@ void ppu2C02::clock() {
 					bg_next_tile_attrib = ppuRead(0x23C0 | (vram_addr.nametable_y << 11) 
 														| (vram_addr.nametable_x << 10) 
 														| ((vram_addr.coarse_y >> 2) << 3) 
-														| (vram_addr.coarse_x >> 2));
-									
-					if(vram_addr.coarse_y & 0x02) bg_next_tile_attrib >>= 4;
-					if(vram_addr.coarse_x & 0x02) bg_next_tile_attrib >>= 2;
+														| (vram_addr.coarse_x >> 2));			
+					if (vram_addr.coarse_y & 0x02) bg_next_tile_attrib >>= 4;
+					if (vram_addr.coarse_x & 0x02) bg_next_tile_attrib >>= 2;
 					bg_next_tile_attrib &= 0x03;
 					break;
 				case 4: 
 					bg_next_tile_lsb = ppuRead((control.pattern_background << 12) 
 											+ ((uint16_t)bg_next_tile_id << 4) 
 											+ (vram_addr.fine_y) + 0);
-
 					break;
 				case 6:
 					bg_next_tile_msb = ppuRead((control.pattern_background << 12)
@@ -468,12 +470,10 @@ void ppu2C02::clock() {
 			}
 		}
 
-		// End of a visible scanline, so increment downwards...
 		if (cycle == 256) {
 			IncrementScrollY();
 		}
 
-		//...and reset the x position
 		if (cycle == 257) {
 			LoadBackgroundShifters();
 			TransferAddressX();
@@ -497,7 +497,6 @@ void ppu2C02::clock() {
 	if (scanline >= 241 && scanline < 261) {
 		if (scanline == 241 && cycle == 1) {
 			status.vertical_blank = 1;
-
 			if (control.enable_nmi) 
 				nmi = true;
 		}
@@ -508,33 +507,18 @@ void ppu2C02::clock() {
 
 	if (mask.render_background) {
 		uint16_t bit_mux = 0x8000 >> fine_x;
-
-		// Select Plane pixels by extracting from the shifter 
-		// at the required location. 
 		uint8_t p0_pixel = (bg_shifter_pattern_lo & bit_mux) > 0;
 		uint8_t p1_pixel = (bg_shifter_pattern_hi & bit_mux) > 0;
-
-		// Combine to form pixel index
 		bg_pixel = (p1_pixel << 1) | p0_pixel;
-
-		// Get palette
 		uint8_t bg_pal0 = (bg_shifter_attrib_lo & bit_mux) > 0;
 		uint8_t bg_pal1 = (bg_shifter_attrib_hi & bit_mux) > 0;
 		bg_palette = (bg_pal1 << 1) | bg_pal0;
 	}
 
-
-	// Now we have a final pixel colour, and a palette for this cycle
-	// of the current scanline. Let's at long last, draw that ^&%*er :P
-
 	sprScreen.SetPixel(cycle - 1, scanline, GetColourFromPaletteRam(bg_palette, bg_pixel));
 
-	// Fake some noise for now
-	//sprScreen.SetPixel(cycle - 1, scanline, palScreen[(rand() % 2) ? 0x3F : 0x30]);
-
-	// Advance renderer - it never stops, it's relentless
 	cycle++;
-	if(cycle >= 341) {
+	if (cycle >= 341) {
 		cycle = 0;
 		scanline++;
 		if (scanline >= 261)

@@ -29,6 +29,7 @@ Cartridge::Cartridge(const std::string& sFileName) {
 
         // Determine Mapper ID
         nMapperID = ((header.mapper2 >> 4) << 4) | (header.mapper1 >> 4);
+		mirror = (header.mapper1 & 0x01) ? VERTICAL : HORIZONTAL;
 
         // "Discover" File Format
         uint8_t nFileType = 1;
@@ -43,7 +44,13 @@ Cartridge::Cartridge(const std::string& sFileName) {
     		ifs.read((char*)vPRGMemory.data(), vPRGMemory.size());
 
     		nCHRBanks = header.chr_rom_chunks;
-    		vCHRMemory.resize(nCHRBanks * 8192);
+
+			if(nCHRBanks == 0) {
+				vCHRMemory.resize(8192);
+			} else {
+				vCHRMemory.resize(nCHRBanks * 8192);
+			}
+    		
     		ifs.read((char*)vCHRMemory.data(), vCHRMemory.size());
     	}
 
@@ -71,10 +78,8 @@ bool Cartridge::cpuRead(uint16_t addr, uint8_t &data) {
 	if (pMapper->cpuMapRead(addr, mapped_addr)) {
 		data = vPRGMemory[mapped_addr];
 		return true;
-	} else {
-		return false;
-    }
-
+	}
+	
 	return false;
 }
 
@@ -83,9 +88,7 @@ bool Cartridge::cpuWrite(uint16_t addr, uint8_t data) {
 	if (pMapper->cpuMapWrite(addr, mapped_addr)) {
 		vPRGMemory[mapped_addr] = data;
 		return true;
-	} else {
-		return false;
-    }
+	} 
 
 	return false;
 }
@@ -95,9 +98,7 @@ bool Cartridge::ppuRead(uint16_t addr, uint8_t & data) {
 	if (pMapper->ppuMapRead(addr, mapped_addr)) {
 		data = vCHRMemory[mapped_addr];
 		return true;
-	} else {
-		return false;
-    }
+	}
 
 	return false;
 }
@@ -107,13 +108,19 @@ bool Cartridge::ppuWrite(uint16_t addr, uint8_t data) {
 	if (pMapper->ppuMapRead(addr, mapped_addr)) {
 		vCHRMemory[mapped_addr] = data;
 		return true;
-	} else {
-        return false;
-    }
-
-	return false;
+	}
+	
+    return false;
 }
 
 bool Cartridge::ImageValid() {
 	return bImageValid;
+}
+
+void Cartridge::reset() {
+	// Note: This does not reset the ROM contents,
+	// but does reset the mapper.
+	if (pMapper != nullptr) {
+		//pMapper->reset();
+	}
 }

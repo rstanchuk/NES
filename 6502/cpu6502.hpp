@@ -77,6 +77,7 @@ class cpu6502 {
         uint16_t addr_rel = 0x00;
         uint8_t opcode = 0x00;
         uint8_t cycles = 0;
+        uint8_t clock_count = 0;
 
         Bus *bus = nullptr;
         uint8_t read(uint16_t a);
