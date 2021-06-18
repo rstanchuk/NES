@@ -1,14 +1,19 @@
-#include "mapper.hpp"
+#include "mapper.h"
 
-Mapper::Mapper(uint8_t prgBanks, uint8_t chrBanks) {
+Mapper::Mapper(uint8_t prgBanks, uint8_t chrBanks)
+{
 	nPRGBanks = prgBanks;
 	nCHRBanks = chrBanks;
 
 	reset();
 }
 
-Mapper::~Mapper() { }
 
-void Mapper::reset() {
-	
+Mapper::~Mapper()
+{
+}
+
+void Mapper::reset()
+{
+
 }
