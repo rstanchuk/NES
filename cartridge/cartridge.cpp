@@ -121,6 +121,6 @@ void Cartridge::reset() {
 	// Note: This does not reset the ROM contents,
 	// but does reset the mapper.
 	if (pMapper != nullptr) {
-		//pMapper->reset();
+		pMapper->reset();
 	}
 }

@@ -15,7 +15,7 @@ class Mapper000 : public Mapper {
         virtual bool ppuMapRead(uint16_t addr, uint32_t &mapped_addr) override;
         virtual bool ppuMapWrite(uint16_t addr, uint32_t &mapped_addr) override;
 
-        //void reset() override;
+        void reset() override;
 };
 
 #endif

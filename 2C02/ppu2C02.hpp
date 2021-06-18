@@ -115,7 +115,27 @@ class ppu2C02 {
         uint16_t bg_shifter_attrib_lo  = 0x0000;
         uint16_t bg_shifter_attrib_hi  = 0x0000;
 
+        struct sObjectAttributeEntry {
+            uint8_t y;			// Y position of sprite
+            uint8_t id;			// ID of tile from pattern memory
+            uint8_t attribute;	// Flags define how sprite should be rendered
+            uint8_t x;			// X position of sprite
+        } OAM[64];
+
+        uint8_t oam_addr = 0x00;
+
+
+        sObjectAttributeEntry spriteScanline[8];
+        uint8_t sprite_count;
+        uint8_t sprite_shifter_pattern_lo[8];
+        uint8_t sprite_shifter_pattern_hi[8];
+
+        bool bSpriteZeroHitPossible = false;
+        bool bSpriteZeroBeingRendered = false;
+
     public:
+        uint8_t* pOAM = (uint8_t*)OAM;
+        
         uint8_t cpuRead(uint16_t addr, bool rdonly = false);
         void cpuWrite(uint16_t addr, uint8_t  data);
 
