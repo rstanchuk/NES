@@ -208,7 +208,7 @@ int main(int argc, char* argv[]) {
 	} else {
 		// Regular Mode
 		NES nes(argv[1], true, false);
-		nes.Construct(510, 480, 1, 1);
+		nes.Construct(512, 480, 1, 1);
 		nes.Start();
 	}
 
