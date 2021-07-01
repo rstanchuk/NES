@@ -9,16 +9,19 @@
 
 class NES : public olc::PixelGameEngine {
 	public:
-		NES(std::string rom) { 
+		NES(std::string rom, bool bRun, bool debug) { 
 			sAppName = "NES"; 
 			this->rom = rom;
+			this->bEmulationRun = bRun;
+			this->debugMode = debug;
 		}
 
 	private: 
 		// The NES
 		Bus nes;
 		std::shared_ptr<Cartridge> cart;
-		bool bEmulationRun = false;
+		bool bEmulationRun;
+		bool debugMode;
 		float fResidualTime = 0.0f;
 
 		uint8_t nSelectedPalette = 0x00;
@@ -156,32 +159,34 @@ class NES : public olc::PixelGameEngine {
 				}
 			}
 
-			DrawCpu(516, 2);
+			if(debugMode) {
+				DrawCpu(516, 2);
 
-			// Draw OAM Contents (first 26 out of 64) ======================================
-			for (int i = 0; i < 26; i++) {
-				std::string s = hex(i, 2) + ": (" + std::to_string(nes.ppu.pOAM[i * 4 + 3])
-					+ ", " + std::to_string(nes.ppu.pOAM[i * 4 + 0]) + ") "
-					+ "ID: " + hex(nes.ppu.pOAM[i * 4 + 1], 2) +
-					+" AT: " + hex(nes.ppu.pOAM[i * 4 + 2], 2);
-				DrawString(516, 72 + i * 10, s);
-			}
-
-			// Draw Palettes & Pattern Tables ==============================================
-			const int nSwatchSize = 6;
-			for (int p = 0; p < 8; p++) { // For each palette
-				for(int s = 0; s < 4; s++) { // For each index
-					FillRect(516 + p * (nSwatchSize * 5) + s * nSwatchSize, 340,
-						nSwatchSize, nSwatchSize, nes.ppu.GetColourFromPaletteRam(p, s));
+				// Draw OAM Contents (first 26 out of 64) ======================================
+				for (int i = 0; i < 26; i++) {
+					std::string s = hex(i, 2) + ": (" + std::to_string(nes.ppu.pOAM[i * 4 + 3])
+						+ ", " + std::to_string(nes.ppu.pOAM[i * 4 + 0]) + ") "
+						+ "ID: " + hex(nes.ppu.pOAM[i * 4 + 1], 2) +
+						+" AT: " + hex(nes.ppu.pOAM[i * 4 + 2], 2);
+					DrawString(516, 72 + i * 10, s);
 				}
-			}
-			
-			// Draw selection reticule around selected palette
-			DrawRect(516 + nSelectedPalette * (nSwatchSize * 5) - 1, 339, (nSwatchSize * 4), nSwatchSize, olc::WHITE);
 
-			// Generate Pattern Tables
-			DrawSprite(516, 348, &nes.ppu.GetPatternTable(0, nSelectedPalette));
-			DrawSprite(648, 348, &nes.ppu.GetPatternTable(1, nSelectedPalette));
+				// Draw Palettes & Pattern Tables ==============================================
+				const int nSwatchSize = 6;
+				for (int p = 0; p < 8; p++) { // For each palette
+					for(int s = 0; s < 4; s++) { // For each index
+						FillRect(516 + p * (nSwatchSize * 5) + s * nSwatchSize, 340,
+							nSwatchSize, nSwatchSize, nes.ppu.GetColourFromPaletteRam(p, s));
+					}
+				}
+				
+				// Draw selection reticule around selected palette
+				DrawRect(516 + nSelectedPalette * (nSwatchSize * 5) - 1, 339, (nSwatchSize * 4), nSwatchSize, olc::WHITE);
+
+				// Generate Pattern Tables
+				DrawSprite(516, 348, &nes.ppu.GetPatternTable(0, nSelectedPalette));
+				DrawSprite(648, 348, &nes.ppu.GetPatternTable(1, nSelectedPalette));
+			}
 
 			// Draw rendered output ========================================================
 			DrawSprite(0, 0, &nes.ppu.GetScreen(), 2);
@@ -195,9 +200,17 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	}
 
-	NES nes(argv[1]);
-	nes.Construct(780, 480, 1, 1);
-	nes.Start();
+	if(argc > 2 && strcmp(argv[2], "-d") == 0) {
+		// Debug Mode
+		NES nes(argv[1], false, true);
+		nes.Construct(780, 480, 1, 1);
+		nes.Start();
+	} else {
+		// Regular Mode
+		NES nes(argv[1], true, false);
+		nes.Construct(510, 480, 1, 1);
+		nes.Start();
+	}
 
 	return 0;
 }
