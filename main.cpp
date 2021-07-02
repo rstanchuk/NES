@@ -200,9 +200,9 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	}
 
-	if(argc > 2 && strcmp(argv[2], "-d") == 0) {
+	if(argc > 2 && strcmp(argv[1], "-d") == 0) {
 		// Debug Mode
-		NES nes(argv[1], false, true);
+		NES nes(argv[2], false, true);
 		nes.Construct(780, 480, 1, 1);
 		nes.Start();
 	} else {
