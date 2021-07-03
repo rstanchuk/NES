@@ -66,9 +66,9 @@ class NES {
             for(int x = 0; x < texWidth; x++) {
                 for(int y = 0; y < texHeight; y++) {
                     int offset = (x * 4 * texHeight) + (y * 4);
-                    screen[offset + 0] = (int)frame[framePixelIndex].r;		// b
+                    screen[offset + 0] = (int)frame[framePixelIndex].b;		// b
                     screen[offset + 1] = (int)frame[framePixelIndex].g;		// g
-                    screen[offset + 2] = (int)frame[framePixelIndex].b;		// r
+                    screen[offset + 2] = (int)frame[framePixelIndex].r;		// r
                     screen[offset + 3] = (int)frame[framePixelIndex].a;		// a
 					framePixelIndex++;
                 }
@@ -201,7 +201,7 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	}
 
-	NES nes(2, argv[1]);
+	NES nes(3, argv[1]);
 	nes.run();
 
 	return 0;
