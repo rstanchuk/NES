@@ -75,14 +75,13 @@ class NES {
 
 		bool processInput() {
 			bool run = true;
-
 			SDL_Event event;
-			while (SDL_PollEvent(&event)) {
+			while(SDL_PollEvent(&event)) {
 				switch (event.type) {
 					case SDL_QUIT:
 						run = false;
 						break;
-					case SDL_PRESSED:
+					case SDL_KEYDOWN:
 						switch (event.key.keysym.sym) {
 							case SDLK_r:	// Reset
 								nes.reset();
@@ -91,28 +90,42 @@ class NES {
 								run = false;
 								break;
 							case SDLK_x:		// A
-								nes.controller[0] |= 0x80;
+								nes.controller[0] = 0x80;
 								break;
 							case SDLK_z:		// B
-								nes.controller[0] |= 0x40;
+								nes.controller[0] = 0x40;
 								break;
 							case SDLK_a:		// Select
-								nes.controller[0] |= 0x20;
+								nes.controller[0] = 0x20;
 								break;
 							case SDLK_s:		// Start
-								nes.controller[0] |= 0x10;
+								nes.controller[0] = 0x10;
 								break;
 							case SDLK_UP:
-								nes.controller[0] |= 0x08;
+								nes.controller[0] = 0x08;
 								break;
 							case SDLK_DOWN:
-								nes.controller[0] |= 0x04;
+								nes.controller[0] = 0x04;
 								break;
 							case SDLK_LEFT:
-								nes.controller[0] |= 0x02;
+								nes.controller[0] = 0x02;
 								break;
 							case SDLK_RIGHT:
-								nes.controller[0] |= 0x01;
+								nes.controller[0] = 0x01;
+								break;
+						}
+						break;
+					case SDL_KEYUP:
+						switch (event.key.keysym.sym) {
+							case SDLK_x: // A
+							case SDLK_z: // B
+							case SDLK_a: // Select
+							case SDLK_s: // Start
+							case SDLK_UP:
+							case SDLK_DOWN:
+							case SDLK_LEFT:
+							case SDLK_RIGHT:
+								nes.controller[0] = 0x00;
 								break;
 						}
 						break;
