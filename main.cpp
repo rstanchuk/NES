@@ -34,8 +34,7 @@ class NES {
 			if (!cart->ImageValid())
 				exit(1);
 
-			nes.insertCartridge(cart);
-						
+			nes.insertCartridge(cart);	
 			nes.reset();
         }
 
@@ -57,6 +56,7 @@ class NES {
 		// NES hardware
 		Bus nes;
 		std::shared_ptr<Cartridge> cart;
+		uint8_t prevControl = 0x00;
         
     public:
         void updateScreen(unsigned char* screen, olc::Pixel* frame) {
@@ -89,17 +89,17 @@ class NES {
 							case SDLK_ESCAPE:
 								run = false;
 								break;
-							case SDLK_x:		// A
-								nes.controller[0] = 0x80;
-								break;
-							case SDLK_z:		// B
-								nes.controller[0] = 0x40;
-								break;
 							case SDLK_a:		// Select
 								nes.controller[0] = 0x20;
 								break;
 							case SDLK_s:		// Start
 								nes.controller[0] = 0x10;
+								break;
+							case SDLK_x:		// A
+								nes.controller[0] = 0x80;
+								break;
+							case SDLK_z:		// B
+								nes.controller[0] = 0x40;
 								break;
 							case SDLK_UP:
 								nes.controller[0] = 0x08;
@@ -117,10 +117,10 @@ class NES {
 						break;
 					case SDL_KEYUP:
 						switch (event.key.keysym.sym) {
-							case SDLK_x: // A
-							case SDLK_z: // B
 							case SDLK_a: // Select
 							case SDLK_s: // Start
+							case SDLK_x: // A
+							case SDLK_z: // B
 							case SDLK_UP:
 							case SDLK_DOWN:
 							case SDLK_LEFT:
