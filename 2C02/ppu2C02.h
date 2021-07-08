@@ -8,6 +8,9 @@
 
 #include "../cartridge/cartridge.h"
 
+#define TEX_WIDTH 256
+#define TEX_HEIGHT 240
+
 class ppu2C02 {
 	public:
 		ppu2C02();
@@ -24,9 +27,11 @@ class ppu2C02 {
 		olc::Sprite sprNameTable[2]    = { olc::Sprite(256, 240), olc::Sprite(256, 240) };
 		olc::Sprite sprPatternTable[2] = { olc::Sprite(128, 128), olc::Sprite(128, 128) };
 
+		uint8_t screen[TEX_WIDTH * TEX_HEIGHT * 4];
+
 	public:
 		// Debugging Utilities
-		olc::Sprite& GetScreen();
+		uint8_t* GetScreen();
 		olc::Sprite& GetNameTable(uint8_t i);
 		olc::Sprite& GetPatternTable(uint8_t i, uint8_t palette);
 

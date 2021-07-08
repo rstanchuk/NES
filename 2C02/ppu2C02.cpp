@@ -74,9 +74,24 @@ ppu2C02::ppu2C02() {
 
 ppu2C02::~ppu2C02() { }
 
-olc::Sprite& ppu2C02::GetScreen() {
+uint8_t* ppu2C02::GetScreen() {
 	// Simply returns the current sprite holding the rendered screen
-	return sprScreen;
+
+	olc::Pixel* frame = sprScreen.GetData();
+
+	int framePixelIndex = 0;
+	for(int x = 0; x < TEX_WIDTH; x++) {
+		for(int y = 0; y < TEX_HEIGHT; y++) {
+			int offset = (x * 4 * TEX_HEIGHT) + (y * 4);
+			screen[offset + 0] = (uint8_t)frame[framePixelIndex].b;		// b
+			screen[offset + 1] = (uint8_t)frame[framePixelIndex].g;		// g
+			screen[offset + 2] = (uint8_t)frame[framePixelIndex].r;		// r
+			screen[offset + 3] = (uint8_t)frame[framePixelIndex].a;		// a
+			framePixelIndex++;
+		}
+	}
+
+	return screen;
 }
 
 
