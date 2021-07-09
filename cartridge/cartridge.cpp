@@ -34,7 +34,6 @@ Cartridge::Cartridge(const std::string& sFileName) {
 		// "Discover" File Format
 		uint8_t nFileType = 1;
 
-
 		if (nFileType == 1) {
 			nPRGBanks = header.prg_rom_chunks;
 			vPRGMemory.resize(nPRGBanks * 16384);
@@ -60,9 +59,7 @@ Cartridge::Cartridge(const std::string& sFileName) {
 		bImageValid = true;
 		ifs.close();
 	}
-
 }
-
 
 Cartridge::~Cartridge() { }
 
@@ -109,7 +106,6 @@ bool Cartridge::ppuWrite(uint16_t addr, uint8_t data) {
 	
 	return false;
 }
-
 
 void Cartridge::reset() {
 	// Mapper reset

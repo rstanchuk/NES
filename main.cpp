@@ -34,7 +34,7 @@ class NES {
 
 			// Cartridge setup
 			cart = std::make_shared<Cartridge>(rom);
-			
+
 			if (!cart->ImageValid())
 				exit(1);
 
