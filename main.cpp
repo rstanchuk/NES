@@ -16,21 +16,21 @@
 
 class NES {
     public:
-        NES(int scale, std::string rom) {
+		NES(int scale, std::string rom) {
 			// SDL setup
-            SDL_Init(SDL_INIT_EVERYTHING);
-            window = SDL_CreateWindow("NES", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, TEX_WIDTH*scale, TEX_HEIGHT*scale, SDL_WINDOW_SHOWN);
-            renderer = SDL_CreateRenderer (window, -1, SDL_RENDERER_ACCELERATED);
+			SDL_Init(SDL_INIT_EVERYTHING);
+			window = SDL_CreateWindow("NES", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, TEX_WIDTH*scale, TEX_HEIGHT*scale, SDL_WINDOW_SHOWN);
+			renderer = SDL_CreateRenderer (window, -1, SDL_RENDERER_ACCELERATED);
 			texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, TEX_WIDTH, TEX_HEIGHT);
 
 			// Graphical API info
 			SDL_RendererInfo info;
-            SDL_GetRendererInfo(renderer, &info);
-            std::cout << "Renderer name: " << info.name << std::endl;
-            std::cout << "Texture formats: " << std::endl;
-            for(int i = 0; i < info.num_texture_formats; i++) {
-                std::cout << SDL_GetPixelFormatName( info.texture_formats[i] ) << std::endl;
-            }
+			SDL_GetRendererInfo(renderer, &info);
+			std::cout << "Renderer name: " << info.name << std::endl;
+			std::cout << "Texture formats: " << std::endl;
+			for(int i = 0; i < info.num_texture_formats; i++) {
+				std::cout << SDL_GetPixelFormatName( info.texture_formats[i] ) << std::endl;
+			}
 
 			// Cartridge setup
 			cart = std::make_shared<Cartridge>(rom);
@@ -43,7 +43,7 @@ class NES {
 
 			// Controller setup
 			nes.controller[0] = 0x00;
-        }
+		}
 
         ~NES() {
             SDL_DestroyRenderer(renderer);
