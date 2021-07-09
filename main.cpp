@@ -15,7 +15,7 @@
 #define TEX_HEIGHT 240
 
 class NES {
-    public:
+	public:
 		NES(int scale, std::string rom) {
 			// SDL setup
 			SDL_Init(SDL_INIT_EVERYTHING);
@@ -36,7 +36,7 @@ class NES {
 			cart = std::make_shared<Cartridge>(rom);
 
 			if (!cart->ImageValid())
-				exit(1);
+			exit(1);
 
 			nes.insertCartridge(cart);	
 			nes.reset();
@@ -45,27 +45,27 @@ class NES {
 			nes.controller[0] = 0x00;
 		}
 
-        ~NES() {
-            SDL_DestroyRenderer(renderer);
-            SDL_DestroyWindow(window);
-            SDL_Quit();
-        }
+		~NES() {
+			SDL_DestroyRenderer(renderer);
+			SDL_DestroyWindow(window);
+			SDL_Quit();
+		}
 
-    private:
+	private:
 		// SDL
-        SDL_Window* window;
-        SDL_Renderer* renderer;
-        SDL_Texture* texture;
+		SDL_Window* window;
+		SDL_Renderer* renderer;
+		SDL_Texture* texture;
 
 		// NES hardware
 		Bus nes;
 		std::shared_ptr<Cartridge> cart;
-        
-    public:
+
+	public:
 		bool processInput() {
 			bool run = true;
 			SDL_Event event;
-			
+
 			while(SDL_PollEvent(&event)) {	
 				switch (event.type) {
 					case SDL_QUIT:
@@ -127,56 +127,56 @@ class NES {
 			return run;
 		}
 
-        void run() {
-            SDL_Event event;
-            bool run = true;
-            bool useLocktexture = false;
-            
-            unsigned int frames = 0;
-            Uint64 start = SDL_GetPerformanceCounter();
+		void run() {
+			SDL_Event event;
+			bool run = true;
+			bool useLocktexture = false;
+
+			unsigned int frames = 0;
+			Uint64 start = SDL_GetPerformanceCounter();
 
 			clock_t fElapsedTime = clock();
 
-            while(run) {
+			while(run) {
 				run = processInput();
 
-                SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-                SDL_RenderClear(renderer);
+				SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+				SDL_RenderClear(renderer);
 
 				do { 
 					nes.clock(); 
 				} while (!nes.ppu.frame_complete);
 				nes.ppu.frame_complete = false;
-            
+
 				uint8_t* screen = nes.ppu.GetScreen();
 				// Makes a texture out of screen in order to display
-                if(useLocktexture) {
-                    unsigned char* lockedPixels = nullptr;
-                    int pitch = 0;
-                    SDL_LockTexture(texture, NULL, reinterpret_cast<void**>(&lockedPixels), &pitch);
-                    std::memcpy(lockedPixels, screen, sizeof(screen)/sizeof(screen[0]));
-                    SDL_UnlockTexture(texture);
-                } else {
-                    SDL_UpdateTexture(texture, NULL, screen, TEX_WIDTH * 4);
-                }
+				if(useLocktexture) {
+					unsigned char* lockedPixels = nullptr;
+					int pitch = 0;
+					SDL_LockTexture(texture, NULL, reinterpret_cast<void**>(&lockedPixels), &pitch);
+					std::memcpy(lockedPixels, screen, sizeof(screen)/sizeof(screen[0]));
+					SDL_UnlockTexture(texture);
+				} else {
+					SDL_UpdateTexture(texture, NULL, screen, TEX_WIDTH * 4);
+				}
 
-                SDL_RenderCopy(renderer, texture, NULL, NULL);
-                SDL_RenderPresent(renderer);
-            
+				SDL_RenderCopy(renderer, texture, NULL, NULL);
+				SDL_RenderPresent(renderer);
+
 				// FPS calculation
-                frames++;
-                const Uint64 end = SDL_GetPerformanceCounter();
-                const static Uint64 freq = SDL_GetPerformanceFrequency();
-                const double seconds = (end - start) / (double)freq;
-                if(seconds > 2.0) {
-                    std::cout << std::setprecision(0) << std::fixed << frames/seconds << " FPS\n";
-                    start = end;
-                    frames = 0;
-                }
-            }
+				frames++;
+				const Uint64 end = SDL_GetPerformanceCounter();
+				const static Uint64 freq = SDL_GetPerformanceFrequency();
+				const double seconds = (end - start) / (double)freq;
+				if(seconds > 2.0) {
+					std::cout << std::setprecision(0) << std::fixed << frames/seconds << " FPS\n";
+					start = end;
+					frames = 0;
+				}
+			}
 
 			nes.controller[0] = 0x00;
-        }
+		}
 };
 
 int main(int argc, char* argv[]) {
