@@ -185,7 +185,7 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	}
 
-	NES nes(3, argv[1]);
+	NES nes(2, argv[1]);
 	nes.run();
 
 	return 0;
