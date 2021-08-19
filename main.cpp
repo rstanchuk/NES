@@ -175,7 +175,6 @@ class NES {
 				}
 			}
 
-
 			nes.controller[0] = 0x00;
 		}
 };
