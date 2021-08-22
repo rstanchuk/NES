@@ -1,2 +1,8 @@
 # NES
-Need to add [olcPixelEngine.h](https://github.com/OneLoneCoder/olcPixelGameEngine) into the directory.
+Need lsdl2 in order to compile.
+
+Mappers implemented:
+000
+
+Games Tested:
+*Super Mario World
