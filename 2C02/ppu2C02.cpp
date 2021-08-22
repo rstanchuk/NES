@@ -1,74 +1,73 @@
 #include "ppu2C02.h"
 
 ppu2C02::ppu2C02() {
-	palScreen[0x00] = olc::Pixel(84, 84, 84);
-	palScreen[0x01] = olc::Pixel(0, 30, 116);
-	palScreen[0x02] = olc::Pixel(8, 16, 144);
-	palScreen[0x03] = olc::Pixel(48, 0, 136);
-	palScreen[0x04] = olc::Pixel(68, 0, 100);
-	palScreen[0x05] = olc::Pixel(92, 0, 48);
-	palScreen[0x06] = olc::Pixel(84, 4, 0);
-	palScreen[0x07] = olc::Pixel(60, 24, 0);
-	palScreen[0x08] = olc::Pixel(32, 42, 0);
-	palScreen[0x09] = olc::Pixel(8, 58, 0);
-	palScreen[0x0A] = olc::Pixel(0, 64, 0);
-	palScreen[0x0B] = olc::Pixel(0, 60, 0);
-	palScreen[0x0C] = olc::Pixel(0, 50, 60);
-	palScreen[0x0D] = olc::Pixel(0, 0, 0);
-	palScreen[0x0E] = olc::Pixel(0, 0, 0);
-	palScreen[0x0F] = olc::Pixel(0, 0, 0);
+	palScreen[0x00] = Pixel{84, 84, 84, 255};
+	palScreen[0x01] = Pixel{0, 30, 116, 255};
+	palScreen[0x02] = Pixel{8, 16, 144, 255};
+	palScreen[0x03] = Pixel{48, 0, 136, 255};
+	palScreen[0x04] = Pixel{68, 0, 100, 255};
+	palScreen[0x05] = Pixel{92, 0, 48, 255};
+	palScreen[0x06] = Pixel{84, 4, 0, 255};
+	palScreen[0x07] = Pixel{60, 24, 0, 255};
+	palScreen[0x08] = Pixel{32, 42, 0, 255};
+	palScreen[0x09] = Pixel{8, 58, 0, 255};
+	palScreen[0x0A] = Pixel{0, 64, 0, 255};
+	palScreen[0x0B] = Pixel{0, 60, 0, 255};
+	palScreen[0x0C] = Pixel{0, 50, 60, 255};
+	palScreen[0x0D] = Pixel{0, 0, 0, 255};
+	palScreen[0x0E] = Pixel{0, 0, 0, 255};
+	palScreen[0x0F] = Pixel{0, 0, 0, 255};
 
-	palScreen[0x10] = olc::Pixel(152, 150, 152);
-	palScreen[0x11] = olc::Pixel(8, 76, 196);
-	palScreen[0x12] = olc::Pixel(48, 50, 236);
-	palScreen[0x13] = olc::Pixel(92, 30, 228);
-	palScreen[0x14] = olc::Pixel(136, 20, 176);
-	palScreen[0x15] = olc::Pixel(160, 20, 100);
-	palScreen[0x16] = olc::Pixel(152, 34, 32);
-	palScreen[0x17] = olc::Pixel(120, 60, 0);
-	palScreen[0x18] = olc::Pixel(84, 90, 0);
-	palScreen[0x19] = olc::Pixel(40, 114, 0);
-	palScreen[0x1A] = olc::Pixel(8, 124, 0);
-	palScreen[0x1B] = olc::Pixel(0, 118, 40);
-	palScreen[0x1C] = olc::Pixel(0, 102, 120);
-	palScreen[0x1D] = olc::Pixel(0, 0, 0);
-	palScreen[0x1E] = olc::Pixel(0, 0, 0);
-	palScreen[0x1F] = olc::Pixel(0, 0, 0);
+	palScreen[0x10] = Pixel{152, 150, 152, 255};
+	palScreen[0x11] = Pixel{8, 76, 196, 255};
+	palScreen[0x12] = Pixel{48, 50, 236, 255};
+	palScreen[0x13] = Pixel{92, 30, 228, 255};
+	palScreen[0x14] = Pixel{136, 20, 176, 255};
+	palScreen[0x15] = Pixel{160, 20, 100, 255};
+	palScreen[0x16] = Pixel{152, 34, 32, 255};
+	palScreen[0x17] = Pixel{120, 60, 0, 255};
+	palScreen[0x18] = Pixel{84, 90, 0, 255};
+	palScreen[0x19] = Pixel{40, 114, 0, 255};
+	palScreen[0x1A] = Pixel{8, 124, 0, 255};
+	palScreen[0x1B] = Pixel{0, 118, 40, 255};
+	palScreen[0x1C] = Pixel{0, 102, 120, 255};
+	palScreen[0x1D] = Pixel{0, 0, 0, 255};
+	palScreen[0x1E] = Pixel{0, 0, 0, 255};
+	palScreen[0x1F] = Pixel{0, 0, 0, 255};
 
-	palScreen[0x20] = olc::Pixel(236, 238, 236);
-	palScreen[0x21] = olc::Pixel(76, 154, 236);
-	palScreen[0x22] = olc::Pixel(120, 124, 236);
-	palScreen[0x23] = olc::Pixel(176, 98, 236);
-	palScreen[0x24] = olc::Pixel(228, 84, 236);
-	palScreen[0x25] = olc::Pixel(236, 88, 180);
-	palScreen[0x26] = olc::Pixel(236, 106, 100);
-	palScreen[0x27] = olc::Pixel(212, 136, 32);
-	palScreen[0x28] = olc::Pixel(160, 170, 0);
-	palScreen[0x29] = olc::Pixel(116, 196, 0);
-	palScreen[0x2A] = olc::Pixel(76, 208, 32);
-	palScreen[0x2B] = olc::Pixel(56, 204, 108);
-	palScreen[0x2C] = olc::Pixel(56, 180, 204);
-	palScreen[0x2D] = olc::Pixel(60, 60, 60);
-	palScreen[0x2E] = olc::Pixel(0, 0, 0);
-	palScreen[0x2F] = olc::Pixel(0, 0, 0);
+	palScreen[0x20] = Pixel{236, 238, 236, 255};
+	palScreen[0x21] = Pixel{76, 154, 236, 255};
+	palScreen[0x22] = Pixel{120, 124, 236, 255};
+	palScreen[0x23] = Pixel{176, 98, 236, 255};
+	palScreen[0x24] = Pixel{228, 84, 236, 255};
+	palScreen[0x25] = Pixel{236, 88, 180, 255};
+	palScreen[0x26] = Pixel{236, 106, 100, 255};
+	palScreen[0x27] = Pixel{212, 136, 32, 255};
+	palScreen[0x28] = Pixel{160, 170, 0, 255};
+	palScreen[0x29] = Pixel{116, 196, 0, 255};
+	palScreen[0x2A] = Pixel{76, 208, 32, 255};
+	palScreen[0x2B] = Pixel{56, 204, 108, 255};
+	palScreen[0x2C] = Pixel{56, 180, 204, 255};
+	palScreen[0x2D] = Pixel{60, 60, 60, 255};
+	palScreen[0x2E] = Pixel{0, 0, 0, 255};
+	palScreen[0x2F] = Pixel{0, 0, 0, 255};
 
-	palScreen[0x30] = olc::Pixel(236, 238, 236);
-	palScreen[0x31] = olc::Pixel(168, 204, 236);
-	palScreen[0x32] = olc::Pixel(188, 188, 236);
-	palScreen[0x33] = olc::Pixel(212, 178, 236);
-	palScreen[0x34] = olc::Pixel(236, 174, 236);
-	palScreen[0x35] = olc::Pixel(236, 174, 212);
-	palScreen[0x36] = olc::Pixel(236, 180, 176);
-	palScreen[0x37] = olc::Pixel(228, 196, 144);
-	palScreen[0x38] = olc::Pixel(204, 210, 120);
-	palScreen[0x39] = olc::Pixel(180, 222, 120);
-	palScreen[0x3A] = olc::Pixel(168, 226, 144);
-	palScreen[0x3B] = olc::Pixel(152, 226, 180);
-	palScreen[0x3C] = olc::Pixel(160, 214, 228);
-	palScreen[0x3D] = olc::Pixel(160, 162, 160);
-	palScreen[0x3E] = olc::Pixel(0, 0, 0);
-	palScreen[0x3F] = olc::Pixel(0, 0, 0);
-
+	palScreen[0x30] = Pixel{236, 238, 236, 255};
+	palScreen[0x31] = Pixel{168, 204, 236, 255};
+	palScreen[0x32] = Pixel{188, 188, 236, 255};
+	palScreen[0x33] = Pixel{212, 178, 236, 255};
+	palScreen[0x34] = Pixel{236, 174, 236, 255};
+	palScreen[0x35] = Pixel{236, 174, 212, 255};
+	palScreen[0x36] = Pixel{236, 180, 176, 255};
+	palScreen[0x37] = Pixel{228, 196, 144, 255};
+	palScreen[0x38] = Pixel{204, 210, 120, 255};
+	palScreen[0x39] = Pixel{180, 222, 120, 255};
+	palScreen[0x3A] = Pixel{168, 226, 144, 255};
+	palScreen[0x3B] = Pixel{152, 226, 180, 255};
+	palScreen[0x3C] = Pixel{160, 214, 228, 255};
+	palScreen[0x3D] = Pixel{160, 162, 160, 255};
+	palScreen[0x3E] = Pixel{0, 0, 0, 255};
+	palScreen[0x3F] = Pixel{0, 0, 0, 255};
 }
 
 
@@ -77,113 +76,25 @@ ppu2C02::~ppu2C02() { }
 uint8_t* ppu2C02::GetScreen() {
 	// Simply returns the current sprite holding the rendered screen
 
-	olc::Pixel* frame = sprScreen.GetData();
+	olc::Pixel* frame = sprScreenOLC.GetData();
 
 	int framePixelIndex = 0;
 	for(int x = 0; x < TEX_WIDTH; x++) {
 		for(int y = 0; y < TEX_HEIGHT; y++) {
 			int offset = (x * 4 * TEX_HEIGHT) + (y * 4);
-			screen[offset + 0] = (uint8_t)frame[framePixelIndex].b;		// b
-			screen[offset + 1] = (uint8_t)frame[framePixelIndex].g;		// g
-			screen[offset + 2] = (uint8_t)frame[framePixelIndex].r;		// r
-			screen[offset + 3] = (uint8_t)frame[framePixelIndex].a;		// a
+			sprScreen[offset + 0] = (uint8_t)frame[framePixelIndex].b;		// b
+			sprScreen[offset + 1] = (uint8_t)frame[framePixelIndex].g;		// g
+			sprScreen[offset + 2] = (uint8_t)frame[framePixelIndex].r;		// r
+			sprScreen[offset + 3] = (uint8_t)frame[framePixelIndex].a;		// a
 			framePixelIndex++;
 		}
 	}
 
-	return screen;
+	return sprScreen;
 }
 
 
-
-olc::Sprite& ppu2C02::GetPatternTable(uint8_t i, uint8_t palette) {
-	// This function draw the CHR ROM for a given pattern table into
-	// an olc::Sprite, using a specified palette. Pattern tables consist
-	// of 16x16 "tiles or characters". It is independent of the running
-	// emulation and using it does not change the systems state, though
-	// it gets all the data it needs from the live system. Consequently,
-	// if the game has not yet established palettes or mapped to relevant
-	// CHR ROM banks, the sprite may look empty. This approach permits a 
-	// "live" extraction of the pattern table exactly how the NES, and 
-	// ultimately the player would see it.
-
-	// A tile consists of 8x8 pixels. On the NES, pixels are 2 bits, which
-	// gives an index into 4 different colours of a specific palette. There
-	// are 8 palettes to choose from. Colour "0" in each palette is effectively
-	// considered transparent, as those locations in memory "mirror" the global
-	// background colour being used. This mechanics of this are shown in 
-	// detail in ppuRead() & ppuWrite()
-
-	// Characters on NES
-	// ~~~~~~~~~~~~~~~~~
-	// The NES stores characters using 2-bit pixels. These are not stored sequentially
-	// but in singular bit planes. For example:
-	//
- 	// 2-Bit Pixels       LSB Bit Plane     MSB Bit Plane
-	// 0 0 0 0 0 0 0 0	  0 0 0 0 0 0 0 0   0 0 0 0 0 0 0 0
-	// 0 1 1 0 0 1 1 0	  0 1 1 0 0 1 1 0   0 0 0 0 0 0 0 0
-	// 0 1 2 0 0 2 1 0	  0 1 1 0 0 1 1 0   0 0 1 0 0 1 0 0
-	// 0 0 0 0 0 0 0 0 =  0 0 0 0 0 0 0 0 + 0 0 0 0 0 0 0 0
-	// 0 1 1 0 0 1 1 0	  0 1 1 0 0 1 1 0   0 0 0 0 0 0 0 0
-	// 0 0 1 1 1 1 0 0	  0 0 1 1 1 1 0 0   0 0 0 0 0 0 0 0
-	// 0 0 0 2 2 0 0 0	  0 0 0 1 1 0 0 0   0 0 0 1 1 0 0 0
-	// 0 0 0 0 0 0 0 0	  0 0 0 0 0 0 0 0   0 0 0 0 0 0 0 0
-	//
-	// The planes are stored as 8 bytes of LSB, followed by 8 bytes of MSB
-
-	// Loop through all 16x16 tiles
-	for (uint16_t nTileY = 0; nTileY < 16; nTileY++) {
-		for (uint16_t nTileX = 0; nTileX < 16; nTileX++) {
-			// Convert the 2D tile coordinate into a 1D offset into the pattern
-			// table memory.
-			uint16_t nOffset = nTileY * 256 + nTileX * 16;
-
-			// Now loop through 8 rows of 8 pixels
-			for (uint16_t row = 0; row < 8; row++) {
-				// For each row, we need to read both bit planes of the character
-				// in order to extract the least significant and most significant 
-				// bits of the 2 bit pixel value. in the CHR ROM, each character
-				// is stored as 64 bits of lsb, followed by 64 bits of msb. This
-				// conveniently means that two corresponding rows are always 8
-				// bytes apart in memory.
-				uint8_t tile_lsb = ppuRead(i * 0x1000 + nOffset + row + 0x0000);
-				uint8_t tile_msb = ppuRead(i * 0x1000 + nOffset + row + 0x0008);
-
-
-				// Now we have a single row of the two bit planes for the character
-				// we need to iterate through the 8-bit words, combining them to give
-				// us the final pixel index
-				for (uint16_t col = 0; col < 8; col++) {
-					// We can get the index value by simply adding the bits together
-					// but we're only interested in the lsb of the row words because...
-					uint8_t pixel = (tile_lsb & 0x01) << 1 | (tile_msb & 0x01);
-
-					// ...we will shift the row words 1 bit right for each column of
-					// the character.
-					tile_lsb >>= 1; tile_msb >>= 1;
-
-					// Now we know the location and NES pixel value for a specific location
-					// in the pattern table, we can translate that to a screen colour, and an
-					// (x,y) location in the sprite
-					sprPatternTable[i].SetPixel
-					(
-						nTileX * 8 + (7 - col), // Because we are using the lsb of the row word first
-												// we are effectively reading the row from right
-												// to left, so we need to draw the row "backwards"
-						nTileY * 8 + row, 
-						GetColourFromPaletteRam(palette, pixel)
-					);
-				}
-			}
-		}
-	}
-
-	// Finally return the updated sprite representing the pattern table
-	return sprPatternTable[i];
-}
-
-
-olc::Pixel& ppu2C02::GetColourFromPaletteRam(uint8_t palette, uint8_t pixel) {
+Pixel ppu2C02::GetColourFromPaletteRam(uint8_t palette, uint8_t pixel) {
 	// This is a convenience function that takes a specified palette and pixel
 	// index and returns the appropriate screen colour.
 	// "0x3F00"       - Offset into PPU addressable range where palettes are stored
@@ -194,11 +105,6 @@ olc::Pixel& ppu2C02::GetColourFromPaletteRam(uint8_t palette, uint8_t pixel) {
 
 	// Note: We dont access tblPalette directly here, instead we know that ppuRead()
 	// will map the address onto the seperate small RAM attached to the PPU bus.
-}
-
-olc::Sprite& ppu2C02::GetNameTable(uint8_t i) {
-	// As of now unused, but a placeholder for nametable visualisation in teh future
-	return sprNameTable[i];
 }
 
 
@@ -1195,7 +1101,11 @@ void ppu2C02::clock() {
 
 	// Now we have a final pixel colour, and a palette for this cycle
 	// of the current scanline. Let's at long last, draw that ^&%*er :P
-	sprScreen.SetPixel(cycle - 1, scanline, GetColourFromPaletteRam(palette, pixel));
+
+	Pixel pix = GetColourFromPaletteRam(palette, pixel);
+	olc::Pixel mypix = olc::Pixel(pix.r, pix.g, pix.b, pix.a);
+	sprScreenOLC.SetPixel(cycle - 1, scanline, mypix);
+
 
 	// Advance renderer - it never stops, it's relentless
 	cycle++;

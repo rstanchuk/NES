@@ -11,6 +11,13 @@
 #define TEX_WIDTH 256
 #define TEX_HEIGHT 240
 
+struct Pixel {
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
+	uint8_t a;
+};
+
 class ppu2C02 {
 	public:
 		ppu2C02();
@@ -22,20 +29,19 @@ class ppu2C02 {
 		uint8_t		tblPalette[32];
 
 	private:
-		olc::Pixel  palScreen[0x40];
-		olc::Sprite sprScreen          =   olc::Sprite(256, 240);
-		olc::Sprite sprNameTable[2]    = { olc::Sprite(256, 240), olc::Sprite(256, 240) };
-		olc::Sprite sprPatternTable[2] = { olc::Sprite(128, 128), olc::Sprite(128, 128) };
+		olc::Sprite sprScreenOLC = olc::Sprite(256, 240); // w, h that holds Pixels
 
-		uint8_t screen[TEX_WIDTH * TEX_HEIGHT * 4];
+		Pixel palScreen[0x40];
+		uint8_t sprScreen[TEX_WIDTH * TEX_HEIGHT * 4];
 
 	public:
 		// Debugging Utilities
 		uint8_t* GetScreen();
-		olc::Sprite& GetNameTable(uint8_t i);
-		olc::Sprite& GetPatternTable(uint8_t i, uint8_t palette);
+		//olc::Sprite& GetNameTable(uint8_t i);
+		//olc::Sprite& GetPatternTable(uint8_t i, uint8_t palette);
 
-		olc::Pixel& GetColourFromPaletteRam(uint8_t palette, uint8_t pixel);
+		//olc::Pixel& GetColourFromPaletteRam(uint8_t palette, uint8_t pixel);
+		Pixel GetColourFromPaletteRam(uint8_t palette, uint8_t pixel);
 
 		bool frame_complete = false;
 
