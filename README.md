@@ -5,4 +5,4 @@ Mappers implemented:
 000
 
 Games Tested:
-*Super Mario World
+*Super Mario Bros.
