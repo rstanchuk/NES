@@ -74,29 +74,13 @@ ppu2C02::ppu2C02() {
 ppu2C02::~ppu2C02() { }
 
 uint8_t* ppu2C02::GetScreen() {
-	// Simply returns the current sprite holding the rendered screen
-
-	olc::Pixel* frame = sprScreenOLC.GetData();
-
-	int framePixelIndex = 0;
-	for(int x = 0; x < TEX_WIDTH; x++) {
-		for(int y = 0; y < TEX_HEIGHT; y++) {
-			int offset = (x * 4 * TEX_HEIGHT) + (y * 4);
-			sprScreen[offset + 0] = (uint8_t)frame[framePixelIndex].b;		// b
-			sprScreen[offset + 1] = (uint8_t)frame[framePixelIndex].g;		// g
-			sprScreen[offset + 2] = (uint8_t)frame[framePixelIndex].r;		// r
-			sprScreen[offset + 3] = (uint8_t)frame[framePixelIndex].a;		// a
-			framePixelIndex++;
-		}
-	}
-
 	return sprScreen;
 }
 
 
-Pixel ppu2C02::GetColourFromPaletteRam(uint8_t palette, uint8_t pixel) {
+Pixel ppu2C02::GetColorFromPaletteRam(uint8_t palette, uint8_t pixel) {
 	// This is a convenience function that takes a specified palette and pixel
-	// index and returns the appropriate screen colour.
+	// index and returns the appropriate screen Color.
 	// "0x3F00"       - Offset into PPU addressable range where palettes are stored
 	// "palette << 2" - Each palette is 4 bytes in size
 	// "pixel"        - Each pixel index is either 0, 1, 2 or 3
@@ -637,7 +621,7 @@ void ppu2C02::clock() {
 					// Therefore we can even further assume that a single palette is
 					// applied to a 2x2 tile combination of the 4x4 tile zone. The very fact
 					// that background tiles "share" a palette locally is the reason why
-					// in some games you see distortion in the colours at screen edges.
+					// in some games you see distortion in the Colors at screen edges.
 
 					// As before when choosing the tile ID, we can use the bottom 12 bits of
 					// the loopy register, but we need to make the implementation "coarser"
@@ -971,8 +955,8 @@ void ppu2C02::clock() {
 
 	// We only render backgrounds if the PPU is enabled to do so. Note if 
 	// background rendering is disabled, the pixel and palette combine
-	// to form 0x00. This will fall through the colour tables to yield
-	// the current background colour in effect
+	// to form 0x00. This will fall through the Color tables to yield
+	// the current background Color in effect
 	if (mask.render_background) {
 		// Handle Pixel Selection by selecting the relevant bit
 		// depending upon fine x scolling. This has the effect of
@@ -1049,7 +1033,7 @@ void ppu2C02::clock() {
 	if (bg_pixel == 0 && fg_pixel == 0) {
 		// The background pixel is transparent
 		// The foreground pixel is transparent
-		// No winner, draw "background" colour
+		// No winner, draw "background" Color
 		pixel = 0x00;
 		palette = 0x00;
 	} else if (bg_pixel == 0 && fg_pixel > 0) {
@@ -1099,13 +1083,19 @@ void ppu2C02::clock() {
 		}
 	}
 
-	// Now we have a final pixel colour, and a palette for this cycle
+	// Now we have a final pixel Color, and a palette for this cycle
 	// of the current scanline. Let's at long last, draw that ^&%*er :P
 
-	Pixel pix = GetColourFromPaletteRam(palette, pixel);
-	olc::Pixel mypix = olc::Pixel(pix.r, pix.g, pix.b, pix.a);
-	sprScreenOLC.SetPixel(cycle - 1, scanline, mypix);
+	Pixel pix = GetColorFromPaletteRam(palette, pixel);
 
+	if((cycle-1) >= 0 && (cycle-1) < TEX_WIDTH && scanline >= 0 && scanline < TEX_HEIGHT) {
+		int offset = (scanline * 4 * TEX_WIDTH) + ((cycle-1) * 4);
+		sprScreen[offset + 0] = pix.b;		// b
+		sprScreen[offset + 1] = pix.g;		// g
+		sprScreen[offset + 2] = pix.r;		// r
+		sprScreen[offset + 3] = pix.a;		// a
+	}
+	
 
 	// Advance renderer - it never stops, it's relentless
 	cycle++;

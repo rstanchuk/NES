@@ -1,6 +1,3 @@
-#define OLC_PGE_APPLICATION
-#include "olcPixelGameEngine.h"
-
 #include <SDL2/SDL.h>
 #include <iomanip>
 #include <cstring>
@@ -149,12 +146,13 @@ class NES {
 				nes.ppu.frame_complete = false;
 
 				uint8_t* screen = nes.ppu.GetScreen();
+
 				// Makes a texture out of screen in order to display
 				if(useLocktexture) {
 					unsigned char* lockedPixels = nullptr;
 					int pitch = 0;
 					SDL_LockTexture(texture, NULL, reinterpret_cast<void**>(&lockedPixels), &pitch);
-					std::memcpy(lockedPixels, screen, sizeof(screen)/sizeof(screen[0]));
+					std::memcpy(lockedPixels, screen, sizeof(screen)/sizeof(*screen));
 					SDL_UnlockTexture(texture);
 				} else {
 					SDL_UpdateTexture(texture, NULL, screen, TEX_WIDTH * 4);

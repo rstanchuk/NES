@@ -4,8 +4,6 @@
 #include <cstdint>
 #include <memory>
 
-#include "../olcPixelGameEngine.h"
-
 #include "../cartridge/cartridge.h"
 
 #define TEX_WIDTH 256
@@ -29,19 +27,13 @@ class ppu2C02 {
 		uint8_t		tblPalette[32];
 
 	private:
-		olc::Sprite sprScreenOLC = olc::Sprite(256, 240); // w, h that holds Pixels
-
 		Pixel palScreen[0x40];
 		uint8_t sprScreen[TEX_WIDTH * TEX_HEIGHT * 4];
 
 	public:
 		// Debugging Utilities
 		uint8_t* GetScreen();
-		//olc::Sprite& GetNameTable(uint8_t i);
-		//olc::Sprite& GetPatternTable(uint8_t i, uint8_t palette);
-
-		//olc::Pixel& GetColourFromPaletteRam(uint8_t palette, uint8_t pixel);
-		Pixel GetColourFromPaletteRam(uint8_t palette, uint8_t pixel);
+		Pixel GetColorFromPaletteRam(uint8_t palette, uint8_t pixel);
 
 		bool frame_complete = false;
 
