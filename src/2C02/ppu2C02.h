@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <memory>
 
-#include "../cartridge/cartridge.h"
+#include "cartridge.h"
 
 #define TEX_WIDTH 256
 #define TEX_HEIGHT 240
@@ -22,16 +22,15 @@ class ppu2C02 {
 		~ppu2C02();
 
 	private:		
-		uint8_t     tblName[2][1024];
-		uint8_t     tblPattern[2][4096];
-		uint8_t		tblPalette[32];
+		uint8_t tblName[2][1024];
+		uint8_t tblPattern[2][4096];
+		uint8_t	tblPalette[32];
 
 	private:
 		Pixel palScreen[0x40];
 		uint8_t sprScreen[TEX_WIDTH * TEX_HEIGHT * 4];
 
 	public:
-		// Debugging Utilities
 		uint8_t* GetScreen();
 		Pixel GetColorFromPaletteRam(uint8_t palette, uint8_t pixel);
 

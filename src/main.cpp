@@ -1,12 +1,12 @@
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <iomanip>
 #include <cstring>
 
 #include <iostream>
 #include <sstream>
 
-#include "6502/bus.h"
-#include "6502/cpu6502.h"
+#include "bus.h"
+#include "cpu6502.h"
 
 #define TEX_WIDTH 256
 #define TEX_HEIGHT 240

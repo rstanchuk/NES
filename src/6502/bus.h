@@ -5,8 +5,8 @@
 #include <array>
 
 #include "cpu6502.h"
-#include "../2C02/ppu2C02.h"
-#include "../cartridge/cartridge.h"
+#include "ppu2C02.h"
+#include "cartridge.h"
 
 class Bus {
 	public:
@@ -19,7 +19,7 @@ class Bus {
 		cpu6502 cpu;	
 		// The 2C02 Picture Processing Unit
 		ppu2C02 ppu;
-		// The Cartridge or "GamePak"
+		// The Cartridge
 		std::shared_ptr<Cartridge> cart;
 		// 2KB of RAM
 		uint8_t cpuRam[2048];

@@ -7,7 +7,7 @@
 #include <vector>
 
 
-#include "../mapper/mapper000.h"
+#include "mapper000.h"
 
 class Cartridge {
 	public:	
