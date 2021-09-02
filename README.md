@@ -1,7 +1,7 @@
 # NES
 Need [SDL](https://www.libsdl.org/) in order to compile.
 
-![](/screen.png =256x240)
+<img src="screen.png" width="256" height="240">
 
 Player1 controlls:
 - a - select
