@@ -1,9 +1,5 @@
 #include <SDL.h>
-#include <iomanip>
-#include <cstring>
-
 #include <iostream>
-#include <sstream>
 
 #include "bus.h"
 #include "cpu6502.h"
@@ -15,7 +11,7 @@ class NES {
 	public:
 		NES(int scale, std::string rom) {
 			// SDL setup
-			SDL_Init(SDL_INIT_EVERYTHING);
+			SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
 			window = SDL_CreateWindow("NES", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, TEX_WIDTH*scale, TEX_HEIGHT*scale, SDL_WINDOW_SHOWN);
 			renderer = SDL_CreateRenderer (window, -1, SDL_RENDERER_ACCELERATED);
 			texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, TEX_WIDTH, TEX_HEIGHT);
@@ -40,6 +36,10 @@ class NES {
 
 			// Controller setup
 			nes.controller[0] = 0x00;
+			nes.controller[1] = 0x00;
+
+			SDL_GameControllerAddMappingsFromFile("gamecontrollerdb.txt");
+			ctrl = SDL_GameControllerOpen(0);
 		}
 
 		~NES() {
@@ -58,13 +58,15 @@ class NES {
 		Bus nes;
 		std::shared_ptr<Cartridge> cart;
 
+		// Controllers
+		SDL_GameController *ctrl;
 	public:
 		bool processInput() {
 			bool run = true;
 			SDL_Event event;
 
 			while(SDL_PollEvent(&event)) {	
-				switch (event.type) {
+				switch(event.type) {
 					case SDL_QUIT:
 						run = false;
 						break;
@@ -84,21 +86,27 @@ class NES {
 								break;
 							case SDLK_x:		// A
 								nes.controller[0] |= 0x80;
+								//nes.controller[1] |= 0x80;
 								break;
 							case SDLK_z:		// B
 								nes.controller[0] |= 0x40;
+								//nes.controller[1] |= 0x40;
 								break;
 							case SDLK_UP:
 								nes.controller[0] |= 0x08;
+								//nes.controller[1] |= 0x08;
 								break;
 							case SDLK_DOWN:
 								nes.controller[0] |= 0x04;
+								//nes.controller[1] |= 0x04;
 								break;
 							case SDLK_LEFT:
 								nes.controller[0] |= 0x02;
+								//nes.controller[1] |= 0x02;
 								break;
 							case SDLK_RIGHT:
 								nes.controller[0] |= 0x01;
+								//nes.controller[1] |= 0x01;
 								break;
 						}
 						break;
@@ -115,6 +123,42 @@ class NES {
 							case SDLK_LEFT:
 							case SDLK_RIGHT:
 								nes.controller[0] = 0x00;
+								break;
+						}
+						break;
+					case SDL_CONTROLLERBUTTONDOWN:
+						switch(event.cbutton.button) {
+							case SDL_CONTROLLER_BUTTON_A:
+								nes.controller[1] |= 0x80;
+								break;
+							case SDL_CONTROLLER_BUTTON_B:
+								nes.controller[1] |= 0x40;
+								break;
+							case SDL_CONTROLLER_BUTTON_DPAD_UP:
+								nes.controller[1] |= 0x08;
+								break;
+							case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+								nes.controller[1] |= 0x04;
+								break;
+							case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+								nes.controller[1] |= 0x02;
+								break;
+							case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+								nes.controller[1] |= 0x01;
+								break;
+						}
+						break;
+					case SDL_CONTROLLERBUTTONUP:
+						switch(event.cbutton.button) {
+							case SDL_CONTROLLER_BUTTON_A:
+							case SDL_CONTROLLER_BUTTON_B:
+								nes.controller[1] &= 0x0f;
+								break;
+							case SDL_CONTROLLER_BUTTON_DPAD_UP:
+							case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+							case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+							case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+								nes.controller[1] = 0x00;
 								break;
 						}
 						break;
