@@ -1,5 +1,7 @@
 # NES
-Need lsdl2 in order to compile.
+Need [SDL](https://www.libsdl.org/) in order to compile.
+
+![This is an image](screen.png)
 
 Player1 controlls:
 - a - select
